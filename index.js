@@ -3,6 +3,10 @@ import { Graph } from "./search.js";
 var startSelected = false;
 var endSelected = false;
 
+const startColor = "#598a59"
+const endColor = "#da8686"
+const pathColor = "#7092cf"
+
 let searchGraph = undefined;
 
 const selectionPrompt = document.getElementById("startEndPrompt");
@@ -26,7 +30,7 @@ function generateNodeTemplate(nodeCount){
     for (let i = 0; i < nodeCount; i++) {
         const col = i % size;
 
-        // Link to right neighbor if not on the last column and within node count
+        // Link to right neighbor
         if (col < size - 1 && i + 1 < nodeCount) {
             links.push({
                 source: i.toString(),
@@ -35,7 +39,7 @@ function generateNodeTemplate(nodeCount){
             });
         }
 
-        // Link to bottom neighbor if within node count
+        // Link to bottom neighbor
         if (i + size < nodeCount) {
             links.push({
                 source: i.toString(),
@@ -50,7 +54,7 @@ function generateNodeTemplate(nodeCount){
 
 function selectStart(elem) {
     elem
-        .attr("fill", "red")
+        .attr("fill", startColor)
         .attr("start", "true")
         .text("start")
     startSelected = true;
@@ -65,7 +69,7 @@ function unselectStart(elem) {
 
 function selectEnd(elem) {
     elem
-        .attr("fill", "green")
+        .attr("fill", endColor)
         .attr("end", "true")
         .text("end")
     endSelected = true;
@@ -178,8 +182,6 @@ function generateGraph(nodeCount) {
         .attr("fill", "black")
         .text(d => d.weight);
 
-    const t = "wut";
-
     const node = svg.selectAll(".node")
         .data(nodes)
         .enter().append("circle")
@@ -240,11 +242,11 @@ function highlightPath(path){
         const nodeId = d.id;
         if (path.includes(nodeId)) {
             if (nodeId === start) {
-                d3.select(this).attr("fill", "red");
+                d3.select(this).attr("fill", startColor);
             } else if (nodeId === end) {
-                d3.select(this).attr("fill", "green");
+                d3.select(this).attr("fill", endColor);
             } else {
-                d3.select(this).attr("fill", "yellow");
+                d3.select(this).attr("fill", pathColor);
             }
         } else {
             d3.select(this).attr("fill", "white");

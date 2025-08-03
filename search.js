@@ -32,7 +32,7 @@ export class Graph {
         }
     }
 
-    reconstructPath(previous, start, end) {
+    constructPath(previous, start, end) {
         const path = [];
         let current = end;
 
@@ -50,12 +50,12 @@ export class Graph {
     }
 
     async dijkstra(start, end) {
-        const distances = new Map();    // Map of node -> distance
-        const previous = new Map();     // Map of node -> previous node in path
+        const distances = new Map();
+        const previous = new Map();
         const visited = new Set();
-        const queue = new MinPriorityQueue();  // We'll define this below
+        const queue = new MinPriorityQueue();
 
-        // Initialize all nodes
+        // Initialize all nodes with inf weight
         for (const node of this.graph.keys()) {
             distances.set(node, Infinity);
         }
@@ -67,6 +67,8 @@ export class Graph {
 
             if (visited.has(current)) continue;
             visited.add(current);
+
+            // Highlight node to visit and sleep for visual effect
             if (current !== start && current !== end) {
                 await this.highlightNode(current);
             }
@@ -75,16 +77,16 @@ export class Graph {
 
             for (const neighbor of this.graph.get(current)) {
                 const {target, weight} = neighbor;
-                const alt = currentDist + weight;
+                const weightFromOrigin = currentDist + weight;
 
-                if (alt < distances.get(target)) {
-                    distances.set(target, alt);
+                if (weightFromOrigin < distances.get(target)) {
+                    distances.set(target, weightFromOrigin);
                     previous.set(target, current);
-                    queue.enqueue(target, alt);
+                    queue.enqueue(target, weightFromOrigin);
                 }
             }
         }
 
-        return this.reconstructPath(previous, start, end);
+        return this.constructPath(previous, start, end);
     }
 }
