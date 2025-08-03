@@ -2,9 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Algo Viz</title>
+    <title>AlgoVis</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .link {
+            stroke: gray;
+            stroke-width: 5px;
+        }
+        .linkLabel {
+            pointer-events: none;
+        }
+        .node {
+            stroke: black;
+            stroke-width: 1px;
+        }
+        text {
+            font: 12px sans-serif;
+            pointer-events: none;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        svg {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
 </head>
 <body>
-    <script src="index.js"></script>
+<div style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+    <p>Select the number of nodes in graph</p>
+
+    <div>
+        <label for="nodeCount">Number of nodes:</label>
+        <input type="number" id="nodeCount" min="1" max="100" style="width: 60px;">
+        <button id="generate">Generate Graph</button>
+    </div>
+
+    <div>
+        <div id="startEndPrompt" style="margin-top: 20px; font-size: 25px"></div>
+        <button id="findPath" hidden>Find Shortest Path</button>
+    </div>
+
+    <div style="display: flex; justify-content: center; width: 100%;">
+        <svg id=graphCanvas width="1000" height="1000"></svg>
+    </div>
+</div>
+<script type="module" src="index.js"></script>
 </body>
 </html>
